@@ -5,6 +5,9 @@ import { OrbitControls, Svg, fitCameraToObject } from '@react-three/drei';
 import { useRef, useState } from 'react';
 import * as THREE from 'three';
 
+const BASE_COLOR = 0x88d7f1;
+const HOVER_COLOR = 0xa0dff4;
+
 export default function Home() {
   const [selected, setSelected] = useState(null);
   return (
@@ -15,7 +18,7 @@ export default function Home() {
         <Container className='relative flex flex-col flex-1 w-full'>
           <div className='flex flex-1 gap-6'>
             <div className='flex-1 rounded-4xl bg-white overflow-hidden shadow-lg shadow-gray-300/40 ring-1 ring-gray-100/80'>
-              <Canvas>
+              <Canvas camera={{ position: [0, 0, 10] }}>
                 <Experience setSelected={setSelected} />
               </Canvas>
             </div>
@@ -84,6 +87,22 @@ function Experience({ setSelected }) {
           position={[position.x, position.y, position.z]}
           scale={0.03}
           onClick={() => setSelected(details)}
+          fillMaterial={{
+            wireframe: false,
+            color: BASE_COLOR,
+            opacity: 0.5,
+          }}
+          // strokeMaterial={{
+          //   wireframe: false,
+          //   color: HOVER_COLOR,
+          //   opacity: 0.5,
+          // }}
+          onPointerEnter={(e) => {
+            e.object.material.color.set(HOVER_COLOR);
+          }}
+          onPointerLeave={(e) => {
+            e.object.material.color.set(BASE_COLOR);
+          }}
         />
       ))}
     </>
@@ -152,26 +171,6 @@ const ELEMENTS = [
     },
   },
   {
-    id: 'common-area',
-    svg: '/svg/common-area.svg',
-    position: {
-      x: 4,
-      y: -2.38,
-      z: 0,
-    },
-    details: {
-      name: 'Common Area',
-      description:
-        'The common area of the airport is a bustling hub where travelers converge. It offers a wide range of amenities, including shops, restaurants, and lounges. Passengers can relax, grab a bite to eat, shop for souvenirs, or catch up on work while waiting for their flights. The atmosphere is filled with anticipation, with people from all walks of life coming together in a dynamic and lively setting.',
-      thumbnail: 'https://source.unsplash.com/jVvtCCycgcQ/800x600',
-      type: 'Common Area',
-      location: 'Level 1',
-      phone: '+960 1234567',
-      email: 'common@area.com',
-      website: '',
-    },
-  },
-  {
     id: 'dairy-queen',
     svg: '/svg/dairy-queen.svg',
     position: {
@@ -189,6 +188,26 @@ const ELEMENTS = [
       phone: '+960 1234567',
       email: 'dairy@queen.com',
       website: 'https://www.dairyqueen.com/',
+    },
+  },
+  {
+    id: 'common-area',
+    svg: '/svg/common-area.svg',
+    position: {
+      x: 4,
+      y: -2.38,
+      z: 0,
+    },
+    details: {
+      name: 'Common Area',
+      description:
+        'The common area of the airport is a bustling hub where travelers converge. It offers a wide range of amenities, including shops, restaurants, and lounges. Passengers can relax, grab a bite to eat, shop for souvenirs, or catch up on work while waiting for their flights. The atmosphere is filled with anticipation, with people from all walks of life coming together in a dynamic and lively setting.',
+      thumbnail: 'https://source.unsplash.com/jVvtCCycgcQ/800x600',
+      type: 'Common Area',
+      location: 'Level 1',
+      phone: '+960 1234567',
+      email: 'common@area.com',
+      website: '',
     },
   },
 ];
